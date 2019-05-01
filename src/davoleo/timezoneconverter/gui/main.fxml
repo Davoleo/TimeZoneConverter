@@ -5,18 +5,18 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="635.0" xmlns="http://javafx.com/javafx/8.0.211" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-       <GridPane BorderPane.alignment="CENTER">
+       <GridPane prefHeight="451.0" prefWidth="608.0" BorderPane.alignment="CENTER">
            <columnConstraints>
                <ColumnConstraints hgrow="SOMETIMES" maxWidth="465.0" minWidth="10.0" prefWidth="234.0" />
                <ColumnConstraints hgrow="SOMETIMES" maxWidth="484.0" minWidth="10.0" prefWidth="187.0" />
                <ColumnConstraints hgrow="SOMETIMES" maxWidth="484.0" minWidth="10.0" prefWidth="180.0" />
            </columnConstraints>
            <rowConstraints>
-               <RowConstraints maxHeight="136.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
-               <RowConstraints maxHeight="216.0" minHeight="10.0" prefHeight="88.0" vgrow="SOMETIMES" />
-               <RowConstraints maxHeight="248.0" minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="136.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="216.0" minHeight="10.0" prefHeight="71.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="438.0" minHeight="10.0" prefHeight="432.0" vgrow="SOMETIMES" />
            </rowConstraints>
            <ChoiceBox prefHeight="25.0" prefWidth="200.0" translateX="10.0" />
            <ChoiceBox prefHeight="25.0" prefWidth="200.0" translateX="10.0" GridPane.rowIndex="1" />
@@ -30,7 +30,7 @@
            <Slider maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="100.0" translateX="80.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          <Label text="Label" GridPane.columnIndex="2" />
          <Label layoutX="10.0" layoutY="41.0" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-         <ImageView fitHeight="200.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+         <ImageView fitHeight="438.0" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
             <image>
                <Image url="@world-map.jpg" />
             </image></ImageView>
