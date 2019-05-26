@@ -55,6 +55,12 @@ public enum EnumTimeZones {
     {
         return longName;
     }
+
+    @Override
+    public String toString()
+    {
+        return name() + " - UTC " + getModifier();
+    }
 }
 
 
