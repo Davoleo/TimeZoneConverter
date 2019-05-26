@@ -25,7 +25,8 @@ public class Main extends Application {
     private LocalTime time2;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage)
+    {
         primaryStage.setTitle("Time Zones Converter");
 
         time1 = new LocalTime(DateTimeZone.UTC);
