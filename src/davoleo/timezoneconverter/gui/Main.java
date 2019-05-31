@@ -1,6 +1,7 @@
 package davoleo.timezoneconverter.gui;
 
 import davoleo.timezoneconverter.data.EnumTimeZones;
+import davoleo.timezoneconverter.data.TimeHelper;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -37,18 +38,17 @@ public class Main extends Application {
 
         slider1.setShowTickMarks(true);
         slider1.setBlockIncrement(1);
-        slider1.setDisable(true);
         slider2.setShowTickMarks(true);
         slider2.setBlockIncrement(1);
-        slider2.setDisable(true);
 
-        slider1.valueProperty().addListener((observable, oldValue, newValue) -> updateTimeBox());
-        slider2.valueProperty().addListener((observable, oldValue, newValue) -> updateTimeBox());
+        slider1.valueProperty().addListener((observable, oldValue, newValue) -> updateTime(1));
+        slider2.valueProperty().addListener((observable, oldValue, newValue) -> updateTime(2));
 
-        timeField1 = new TextField(time1.getHourOfDay() + ":" + time1.getMinuteOfHour());
-        timeField2 = new TextField(time2.getHourOfDay() + ":" + time2.getMinuteOfHour());
+        timeField1 = new TextField();
+        timeField2 = new TextField();
         timeField1.setEditable(false);
         timeField2.setEditable(false);
+        refresh();
 
         legaleCheck = new CheckBox("Daylight Saving Time");
         int monthNumber = LocalDate.now().getMonth().getValue();
@@ -69,9 +69,11 @@ public class Main extends Application {
         zoneBox1 = new ChoiceBox<>();
         zoneBox1.getItems().addAll(EnumTimeZones.values());
         zoneBox1.setValue(EnumTimeZones.GMT);
+        zoneBox1.setOnAction(event -> updateTime(1));
         zoneBox2 = new ChoiceBox<>();
         zoneBox2.getItems().addAll(EnumTimeZones.values());
         zoneBox2.setValue(EnumTimeZones.GMT);
+        zoneBox1.setOnAction(event -> updateTime(2));
 
         GridPane layout = new GridPane();
         layout.setHgap(25);
@@ -97,11 +99,27 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void updateTimeBox()
+    //Refreshes all application controls
+    private void refresh()
     {
-        //TODO Fix time box updates
-        time1.hourOfDay().setCopy((int) slider1.getValue());
-        time2.hourOfDay().setCopy((int) slider2.getValue());
+        timeField1.setText(TimeHelper.timeToString(time1));
+        timeField2.setText(TimeHelper.timeToString(time2));
+    }
+
+
+    private void updateTime(int id)
+    {
+        switch (id)
+        {
+            case 1:
+                time1 = time1.withHourOfDay((int) slider1.getValue());
+                refresh();
+                break;
+            case 2:
+                time2 = time2.withHourOfDay((int) slider2.getValue());
+                refresh();
+                break;
+        }
     }
 
     public static void main(String[] args) {

@@ -59,7 +59,7 @@ public enum EnumTimeZones {
     @Override
     public String toString()
     {
-        return name() + " - UTC " + getModifier();
+        return name() + " - UTC " + (getModifier() >= 0 ? "+" + getModifier() : getModifier());
     }
 }
 
