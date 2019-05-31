@@ -1,6 +1,7 @@
 package davoleo.timezoneconverter.data;
 
 import org.joda.time.LocalTime;
+import org.joda.time.Period;
 
 /*************************************************
  * Author: Davoleo
@@ -25,13 +26,20 @@ public class TimeHelper {
 
         return hour + ":" + minute;
     }
-//    TODO Delta Calculations
-//    public static ZoneOffset delta(OffsetTime time1, OffsetTime time2)
-//    {
-//        int h1 = time1.getHour();
-//        int h2 = time2.getHour();
-//
-//
-//    }
+
+    public static Period delta(LocalTime time1, LocalTime time2)
+    {
+        int h1 = time1.getHourOfDay();
+        int h2 = time2.getHourOfDay();
+
+        int delta;
+        if (h1 > h2)
+            delta = h1 - h2;
+        else
+            delta = h2 - h1;
+
+        return Period.hours(delta);
+
+    }
 
 }

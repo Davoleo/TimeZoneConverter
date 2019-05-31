@@ -41,8 +41,8 @@ public class Main extends Application {
         slider2.setShowTickMarks(true);
         slider2.setBlockIncrement(1);
 
-        slider1.valueProperty().addListener((observable, oldValue, newValue) -> updateTime(1));
-        slider2.valueProperty().addListener((observable, oldValue, newValue) -> updateTime(2));
+        slider1.valueProperty().addListener((observable, oldValue, newValue) -> handleSliderDrag(1));
+        slider2.valueProperty().addListener((observable, oldValue, newValue) -> handleSliderDrag(2));
 
         timeField1 = new TextField();
         timeField2 = new TextField();
@@ -69,11 +69,11 @@ public class Main extends Application {
         zoneBox1 = new ChoiceBox<>();
         zoneBox1.getItems().addAll(EnumTimeZones.values());
         zoneBox1.setValue(EnumTimeZones.GMT);
-        zoneBox1.setOnAction(event -> updateTime(1));
+        zoneBox1.setOnAction(event -> handleChoice(1));
         zoneBox2 = new ChoiceBox<>();
         zoneBox2.getItems().addAll(EnumTimeZones.values());
         zoneBox2.setValue(EnumTimeZones.GMT);
-        zoneBox1.setOnAction(event -> updateTime(2));
+        zoneBox1.setOnAction(event -> handleChoice(2));
 
         GridPane layout = new GridPane();
         layout.setHgap(25);
@@ -106,8 +106,26 @@ public class Main extends Application {
         timeField2.setText(TimeHelper.timeToString(time2));
     }
 
+    //FIXME
+    private void handleChoice(int id)
+    {
+         switch (id)
+         {
+             case 1:
+                 int m1 = zoneBox1.getSelectionModel().getSelectedItem().getModifier();
+                 time1 = time1.withHourOfDay(time1.getHourOfDay() - m1);
+                 refresh();
+                 break;
+             case 2:
+                 int m2 = zoneBox2.getSelectionModel().getSelectedItem().getModifier();
+                 time2 = time2.withHourOfDay(time2.getHourOfDay() - m2);
+                 refresh();
+                 break;
+         }
 
-    private void updateTime(int id)
+    }
+
+    private void handleSliderDrag(int id)
     {
         switch (id)
         {
