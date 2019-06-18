@@ -27,6 +27,19 @@ public class TimeHelper {
         return hour + ":" + minute;
     }
 
+
+
+    public static LocalTime offsetHour(LocalTime time, int offset)
+    {
+        int result = time.getHourOfDay() + offset;
+        if (result > 23)
+            result = result - 24;
+        if (result < 0)
+            result = result + 24;
+
+        return time.withHourOfDay(result);
+    }
+
     public static Period delta(LocalTime time1, LocalTime time2)
     {
         int h1 = time1.getHourOfDay();

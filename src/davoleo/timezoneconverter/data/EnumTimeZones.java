@@ -61,6 +61,15 @@ public enum EnumTimeZones {
     {
         return name() + " - UTC " + (getModifier() >= 0 ? "+" + getModifier() : getModifier());
     }
+
+    public static EnumTimeZones getZoneFromModifier(int mod)
+    {
+        for (EnumTimeZones zone : EnumTimeZones.values())
+            if (zone.getModifier() == mod)
+                return zone;
+
+            return null;
+    }
 }
 
 

@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalTime;
 
@@ -20,7 +21,7 @@ public class Main extends Application {
     private TextField timeField1, timeField2;
     private Label zone1, zone2;
     private ChoiceBox<EnumTimeZones> zoneBox1, zoneBox2;
-    private Button deltaButton;
+    private Button deltaButton, refreshButton;
     private CheckBox lockDelta, legaleCheck;
     private LocalTime time1;
     private LocalTime time2;
@@ -41,14 +42,13 @@ public class Main extends Application {
         slider2.setShowTickMarks(true);
         slider2.setBlockIncrement(1);
 
-        slider1.valueProperty().addListener((observable, oldValue, newValue) -> handleSliderDrag(1));
-        slider2.valueProperty().addListener((observable, oldValue, newValue) -> handleSliderDrag(2));
+        slider1.valueProperty().addListener((observable, oldValue, newValue) -> handleSliderDrag());
+        slider2.valueProperty().addListener((observable, oldValue, newValue) -> handleSliderDrag());
 
         timeField1 = new TextField();
         timeField2 = new TextField();
         timeField1.setEditable(false);
         timeField2.setEditable(false);
-        refresh();
 
         legaleCheck = new CheckBox("Daylight Saving Time");
         int monthNumber = LocalDate.now().getMonth().getValue();
@@ -63,17 +63,22 @@ public class Main extends Application {
                 (time1.getHourOfDay() - time2.getHourOfDay()) + " or " + (time2.getHourOfDay() - time1.getHourOfDay()),
                 "Time zones hour diff", JOptionPane.INFORMATION_MESSAGE));
 
+        refreshButton = new Button("Refresh");
+        refreshButton.setOnAction(event -> refresh());
+
         zone1 = new Label(EnumTimeZones.GMT.getLongName());
         zone2 = new Label(EnumTimeZones.GMT.getLongName());
 
         zoneBox1 = new ChoiceBox<>();
         zoneBox1.getItems().addAll(EnumTimeZones.values());
         zoneBox1.setValue(EnumTimeZones.GMT);
-        zoneBox1.setOnAction(event -> handleChoice(1));
+        zoneBox1.setOnAction(event -> handleChoice());
         zoneBox2 = new ChoiceBox<>();
         zoneBox2.getItems().addAll(EnumTimeZones.values());
         zoneBox2.setValue(EnumTimeZones.GMT);
-        zoneBox1.setOnAction(event -> handleChoice(2));
+        zoneBox2.setOnAction(event -> handleChoice());
+
+        refresh();
 
         GridPane layout = new GridPane();
         layout.setHgap(25);
@@ -91,8 +96,9 @@ public class Main extends Application {
         GridPane.setConstraints(legaleCheck, 0, 2);
         GridPane.setConstraints(deltaButton,1, 2);
         GridPane.setConstraints(lockDelta, 2, 2);
+        GridPane.setConstraints(refreshButton, 3, 2);
 
-        layout.getChildren().addAll(slider1, slider2, timeField1, timeField2, zone1, zone2, zoneBox1, zoneBox2, legaleCheck, deltaButton, lockDelta);
+        layout.getChildren().addAll(slider1, slider2, timeField1, timeField2, zone1, zone2, zoneBox1, zoneBox2, legaleCheck, deltaButton, lockDelta, refreshButton);
 
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(layout, 750, 250));
@@ -102,41 +108,46 @@ public class Main extends Application {
     //Refreshes all application controls
     private void refresh()
     {
+        int deltaHour1 = TimeHelper.delta(DateTime.now(DateTimeZone.UTC).toLocalTime(), time1).getHours();
+        int deltaHour2 = TimeHelper.delta(DateTime.now(DateTimeZone.UTC).toLocalTime(), time2).getHours();
+
+        //Refresh minutes
+        time1 = time1.withMinuteOfHour(DateTime.now().minuteOfHour().get());
+        time2 = time2.withMinuteOfHour(DateTime.now().minuteOfHour().get());
+
         timeField1.setText(TimeHelper.timeToString(time1));
         timeField2.setText(TimeHelper.timeToString(time2));
-    }
 
-    //FIXME
-    private void handleChoice(int id)
-    {
-         switch (id)
-         {
-             case 1:
-                 int m1 = zoneBox1.getSelectionModel().getSelectedItem().getModifier();
-                 time1 = time1.withHourOfDay(time1.getHourOfDay() - m1);
-                 refresh();
-                 break;
-             case 2:
-                 int m2 = zoneBox2.getSelectionModel().getSelectedItem().getModifier();
-                 time2 = time2.withHourOfDay(time2.getHourOfDay() - m2);
-                 refresh();
-                 break;
-         }
+        zone1.setText(EnumTimeZones.getZoneFromModifier(deltaHour1).getLongName());
+        zone2.setText(EnumTimeZones.getZoneFromModifier(deltaHour2).getLongName());
+
+        //slider1.setValue(deltaHour1);
+        //slider1.setValue(deltaHour2);
 
     }
 
-    private void handleSliderDrag(int id)
+    private void handleChoice()
     {
-        switch (id)
-        {
-            case 1:
-                time1 = time1.withHourOfDay((int) slider1.getValue());
-                refresh();
-                break;
-            case 2:
-                time2 = time2.withHourOfDay((int) slider2.getValue());
-                refresh();
-                break;
+        int modifier = zoneBox1.getSelectionModel().getSelectedItem().getModifier();
+        time1 = TimeHelper.offsetHour(DateTime.now(DateTimeZone.UTC).toLocalTime(), modifier);
+        refresh();
+
+        int modifier2 = zoneBox2.getSelectionModel().getSelectedItem().getModifier();
+        time2 = TimeHelper.offsetHour(DateTime.now(DateTimeZone.UTC).toLocalTime(), modifier2);
+        refresh();
+
+    }
+
+    private void handleSliderDrag()
+    {
+        if (time1.getHourOfDay() != slider1.getValue()) {
+            time1 = time1.withHourOfDay((int) slider1.getValue());
+            refresh();
+        }
+
+        if (time2.getHourOfDay() != slider2.getValue()) {
+            time2 = time2.withHourOfDay((int) slider2.getValue());
+            refresh();
         }
     }
 
