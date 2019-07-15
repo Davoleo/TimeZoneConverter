@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="TimeZoneConverter.jnlp">
+  <information>
+    <title>TimeZoneConverter</title>
+    <vendor>Davoleo</vendor>
+    <description>Simple application to check Time and Diffs in different timezones</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="TimeZoneConverter.jar" size="537109" download="eager" />
+    <jar href="joda-time-2.10.2.jar" size="642711" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="600" height="400" main-class="davoleo.timezoneconverter.gui.Main"  name="TimeZoneConverter" />
+  <update check="background"/>
+</jnlp>
